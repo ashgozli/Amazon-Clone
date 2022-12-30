@@ -1,8 +1,26 @@
 import React from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Login.css';
 
 function Login() {
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const signIn = e => {
+        //Prevents refreshing when given email and password
+        e.preventDefault();
+
+        //Firebase Login
+    }
+
+    const register = e => {
+        e.preventDefault();
+
+        //Firebase Registery
+    }
+
     return (
         <div className='login'>
             <Link to='/'>
@@ -15,12 +33,15 @@ function Login() {
 
                 <form>
                     <h5>E-mail</h5>
-                    <input type='text' />
+                    <input type='text' value={email} onChange=
+                        {e => setEmail(e.target.value)} />
 
                     <h5>Password</h5>
-                    <input type='password' />
+                    <input type='password' value={password} onChange=
+                        {e => setPassword(e.target.value)} />
 
-                    <button className='login_signInButton'>Sign In</button>
+                    <button type='submit' onClick={signIn}
+                        className='login_signInButton'>Sign In</button>
                 </form>
 
                 <p>
@@ -29,7 +50,8 @@ function Login() {
                 </p>
 
                 <h6>New to Amazon?</h6>
-                <button className='login_registerButton'>Create Your Amazon Account</button>
+                <button type onClick={register}
+                    className='login_registerButton'>Create Your Amazon Account</button>
 
                 <h7>© 1996-2022, Amazon.com, Inc. or its affiliates</h7>
             </div>
