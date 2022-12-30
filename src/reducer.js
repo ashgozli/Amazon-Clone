@@ -1,4 +1,3 @@
-import { iconButtonClasses } from "@mui/material";
 
 //Create an empty data layer
 export const initialState = {
