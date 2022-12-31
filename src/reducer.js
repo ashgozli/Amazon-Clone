@@ -2,6 +2,7 @@
 //Create an empty data layer
 export const initialState = {
     basket: [],
+    user: null
 };
 
 //Selector Function: allows the basket to tally and add the item value prices  
@@ -32,11 +33,16 @@ const reducer = (state, action) => {
                     as it is not in the cart!`
                 )
             }
-
             return {
                 ...state,
                 basket: newBasket
             }
+
+        case "SET_USER":
+            return {
+                ...state,
+                user: action.user
+            };
 
         default:
             return state;

@@ -1,9 +1,12 @@
 import React from 'react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import { auth } from './Firebase';
 import './Login.css';
 
 function Login() {
+
+    const history = useHistory();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -13,12 +16,27 @@ function Login() {
         e.preventDefault();
 
         //Firebase Login
+        auth
+            .signInWithEmailAndPassword(email, password)
+            .then(auth => {
+                history.push('/')
+            })
+            .catch(error => alert(error.message))
     }
 
     const register = e => {
         e.preventDefault();
 
-        //Firebase Registery
+        //Firebase Registry
+        auth
+            .createUserWithEmailAndPassword(email, password)
+            .then((auth) => {
+                //Successfully created a user
+                if (auth) {
+                    history.go('/')
+                }
+            })
+            .catch(error => alert(error.message))
     }
 
     return (
@@ -50,7 +68,7 @@ function Login() {
                 </p>
 
                 <h6>New to Amazon?</h6>
-                <button type onClick={register}
+                <button onClick={register}
                     className='login_registerButton'>Create Your Amazon Account</button>
 
                 <h7>© 1996-2022, Amazon.com, Inc. or its affiliates</h7>
