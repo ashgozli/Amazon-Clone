@@ -1,42 +1,39 @@
 import React from 'react';
 import { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { auth } from './Firebase';
 import './Login.css';
 
 function Login() {
 
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const signIn = e => {
+    const signIn = async (e) => {
         //Prevents refreshing when given email and password
         e.preventDefault();
 
         //Firebase Login
-        auth
-            .signInWithEmailAndPassword(email, password)
-            .then(auth => {
-                history.push('/')
-            })
-            .catch(error => alert(error.message))
+        try {
+            var authResult = await auth.signInWithEmailAndPassword(email, password);
+            navigate('/');
+        } catch (error) {
+            alert(error.message);
+        }
     }
 
-    const register = e => {
+    const register = async (e) => {
         e.preventDefault();
 
         //Firebase Registry
-        auth
-            .createUserWithEmailAndPassword(email, password)
-            .then((auth) => {
-                //Successfully created a user
-                if (auth) {
-                    history.go('/')
-                }
-            })
-            .catch(error => alert(error.message))
+        try {
+            var authResult = await auth.createUserWithEmailAndPassword(email, password);
+            if (authResult) navigate('/');
+        } catch (error) {
+            alert(error.message);
+        }
     }
 
     return (
