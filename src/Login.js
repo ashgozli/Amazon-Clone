@@ -1,24 +1,39 @@
 import React from 'react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { auth } from './Firebase';
 import './Login.css';
 
 function Login() {
 
+    const navigate = useNavigate();
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const signIn = e => {
+    const signIn = async (e) => {
         //Prevents refreshing when given email and password
         e.preventDefault();
 
         //Firebase Login
+        try {
+            var authResult = await auth.signInWithEmailAndPassword(email, password);
+            navigate('/');
+        } catch (error) {
+            alert(error.message);
+        }
     }
 
-    const register = e => {
+    const register = async (e) => {
         e.preventDefault();
 
-        //Firebase Registery
+        //Firebase Registry
+        try {
+            var authResult = await auth.createUserWithEmailAndPassword(email, password);
+            if (authResult) navigate('/');
+        } catch (error) {
+            alert(error.message);
+        }
     }
 
     return (
@@ -50,7 +65,7 @@ function Login() {
                 </p>
 
                 <h6>New to Amazon?</h6>
-                <button type onClick={register}
+                <button onClick={register}
                     className='login_registerButton'>Create Your Amazon Account</button>
 
                 <h7>© 1996-2022, Amazon.com, Inc. or its affiliates</h7>
