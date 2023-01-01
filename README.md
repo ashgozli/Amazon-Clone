@@ -39,6 +39,76 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
+## Create a Firebase Project and Enable Authentication 🔐
+
+Before you can add Firebase to your JavaScript app, you need to create a Firebase project and register your app with that project. When you register your app with Firebase, you'll get a Firebase configuration object that you'll use to connect your app with your Firebase project resources.
+
+### **Step 1**: In the [Firebase console](https://console.firebase.google.com/?authuser=2), Click Add Project
+
+* To add Firebase resources to an existing Google Cloud project, enter its project name or select it from the dropdown menu.
+
+* To create a new project, enter the desired project name. You can also optionally edit the project ID displayed below the project name.
+
+* If prompted, review and accept the [**Firebase terms**](https://firebase.google.com/terms?authuser=2).
+
+* Click **Create project** (or **Add Firebase**, if you're using an existing Google Cloud project).
+
+### **Step 2**: Install the SDK and [Initialize Firebase](https://firebase.google.com/docs/web/setup?authuser=2&hl=en#add-sdks-initialize)
+
+* This page describes setup instructions for version 9 of the Firebase JS SDK, which uses a [JavaScript Module](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) format.
+
+* This workflow uses npm and requires module bundlers or JavaScript framework tooling because the v9 SDK is optimized to work with [module   bundlers](https://firebase.google.com/docs/web/module-bundling?authuser=2) to eliminate unused code (tree-shaking) and decrease SDK size.
+
+**Note: Installs Firebase using npm.**
+
+### `npm install firebase`
+
+**Note: Initialize Firebase in your app and create a Firebase App object.**
+
+A Firebase App is a container-like object that stores common configuration and shares authentication across Firebase services. After you initialize a Firebase App object in your code, you can add and start using Firebase services.
+
+```
+import { initializeApp } from 'firebase/app';
+
+// TODO: Replace the following with your app's Firebase project configuration
+const firebaseConfig = {
+  //...
+};
+
+const app = initializeApp(firebaseConfig);
+```
+
+### **Step 3**: [Access Firebase](https://firebase.google.com/docs/web/setup?authuser=2&hl=en#access-firebase) in Your App
+
+Firebase services (like Cloud Firestore, Authentication, Realtime Database, Remote Config, and more) are available to import within individual sub-packages.
+
+**The example below shows how you could use the Cloud Firestore Lite SDK to retrieve a list of data:**
+
+```
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
+// Follow this pattern to import other Firebase services
+// import { } from 'firebase/<service>';
+
+// TODO: Replace the following with your app's Firebase project configuration
+const firebaseConfig = {
+  //...
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Get a list of cities from your database
+async function getCities(db) {
+  const citiesCol = collection(db, 'cities');
+  const citySnapshot = await getDocs(citiesCol);
+  const cityList = citySnapshot.docs.map(doc => doc.data());
+  return cityList;
+}
+```
+
+⚠️ The `Firebase.js` file is only an example in this repository. 
+
 ## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
