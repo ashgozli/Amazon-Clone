@@ -2,15 +2,14 @@ import './App.css';
 import Home from './Home';
 import Header from './Header';
 import Checkout from './Checkout';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './Login';
 import React, { useEffect } from "react";
 import { auth } from './Firebase';
 import { useStateValue } from './StateProvider';
 
-
 function App() {
-
+  // eslint-disable-next-line no-empty-pattern
   const [{ }, dispatch] = useStateValue();
 
   useEffect(() => {
@@ -32,24 +31,26 @@ function App() {
         })
       }
     })
-  }, [])
+  }, [dispatch])
 
   return (
     <Router>
       <div className="app">
-        <Switch>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path='/checkout'>
-            <Header />
-            <Checkout />
-          </Route>
-          <Route path='/'>
-            <Header />
-            <Home />
-          </Route>
-        </Switch>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path='/checkout' element={
+            <>
+              <Header />
+              <Checkout />
+            </>
+          } />
+          <Route path='/' element={
+            <>
+              <Header />
+              <Home />
+            </>
+          } />
+        </Routes>
       </div>
     </Router>
   );
